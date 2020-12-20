@@ -25,13 +25,11 @@ matrixportal.add_text(
     text_position=(2, (matrixportal.graphics.display.height // 2) - 1),
 )
  
-QUOTES_FEED = "sign-quotes.signtext"
-COLORS_FEED = "sign-quotes.signcolor"
 SCROLL_DELAY = 0.02
 UPDATE_DELAY = 600
  
 quotes = ["Hello, there.", "This is another quote..."]
-colors = ["#FF5733", "#58D68D" ]
+colors = ["#FF5733", "#58D68D", "#5B2C6F" ]
 last_color = None
 last_quote = None
  
