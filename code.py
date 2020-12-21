@@ -30,8 +30,8 @@ matrixportal.add_text(
 SCROLL_DELAY = 0.02
 UPDATE_DELAY = 600
  
-quotes = ["Hello, there.", "This is another quote..."]
-colors = ["#FF5733", "#58D68D", "#5B2C6F" ]
+quotes = ["nOtHiNg SaYs MeRrY cHrIsTmAs LiKe A sKuLl WrEaTh..."]
+colors = ["FF0000", "#2C6F3C" ]
 last_color = None
 last_quote = None
  
