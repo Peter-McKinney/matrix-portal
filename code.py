@@ -27,10 +27,10 @@ matrixportal.add_text(
     text_position=(2, (matrixportal.graphics.display.height // 2) - 1),
 )
  
-SCROLL_DELAY = 0.02
+SCROLL_DELAY = 0.03
 UPDATE_DELAY = 600
  
-quotes = ["nOtHiNg SaYs MeRrY cHrIsTmAs LiKe A sKuLl WrEaTh..."]
+quotes = ["\"nOtHiNg SaYs MeRrY cHrIsTmAs LiKe A sKuLl WrEaTh...\""]
 colors = ["FF0000", "#2C6F3C" ]
 last_color = None
 last_quote = None
