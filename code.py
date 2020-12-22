@@ -70,5 +70,4 @@ while True:
     matrixportal.scroll_text(SCROLL_DELAY)
  
     if time.monotonic() > last_update + UPDATE_DELAY:
-        update_data()
         last_update = time.monotonic()
