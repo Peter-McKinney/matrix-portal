@@ -1,10 +1,4 @@
 # Guide location: https://learn.adafruit.com/aio-quote-board-matrix-display/code-the-quote-board
-
-# Quote board matrix display
-# uses AdafruitIO to serve up a quote text feed and color feed
-# random quotes are displayed, updates periodically to look for new quotes
-# avoids repeating the same quote twice in a row
- 
 import time
 import random
 import board
@@ -26,48 +20,72 @@ matrixportal.add_text(
     text_font=terminalio.FONT,
     text_position=(2, (matrixportal.graphics.display.height // 2) - 1),
 )
+
+QUOTES_FEED = "christmas-messages.display-messages"
+SCROLL_DELAY = 0.02
+UPDATE_DELAY = 600 
  
-SCROLL_DELAY = 0.03
-UPDATE_DELAY = 600
- 
-quotes = ["\"nOtHiNg SaYs MeRrY cHrIsTmAs LiKe A sKuLl WrEaTh...\""]
+quotes = []
 colors = ["FF0000", "#2C6F3C" ]
-last_color = None
-last_quote = None
- 
- 
 matrixportal.set_text("Starting", 1)
- 
+
 last_update = time.monotonic()
 matrixportal.set_text(" ", 1)
-quote_index = None
-color_index = None
+
+def get_quotes_from_feed():
+    print("Updating data from Adafruit IO")
  
-while True:
-    # Choose a random quote from quotes
+    matrixportal.set_text("Retrieving", 1)
+
+    try:
+        print(QUOTES_FEED)
+        quotes_data = matrixportal.get_io_data(QUOTES_FEED)
+        quotes.clear()
+
+        for json_data in quotes_data:
+            quotes.append(matrixportal.network.json_traverse(json_data, ["value"]))
+
+        print(quotes)
+    # pylint: disable=broad-except
+    except Exception as error:
+        print(error) 
+
+def get_random_quote():
+    last_quote = None
+    quote_index = None
+
     if len(quotes) > 1 and last_quote is not None:
         while quote_index == last_quote:
             quote_index = random.randrange(0, len(quotes))
     else:
         quote_index = random.randrange(0, len(quotes))
     last_quote = quote_index
- 
-    # Choose a random color from colors
+    return quotes[quote_index]
+
+def get_random_color():
+    last_color = None
+    color_index = None
+
     if len(colors) > 1 and last_color is not None:
         while color_index == last_color:
             color_index = random.randrange(0, len(colors))
     else:
         color_index = random.randrange(0, len(colors))
     last_color = color_index
- 
-    # Set the quote text
-    matrixportal.set_text(quotes[quote_index])
- 
-    # Set the text color
-    matrixportal.set_text_color(colors[color_index])
+    return colors[color_index]
+
+get_quotes_from_feed() 
+
+while True:
+    quote = get_random_quote()
+    color = get_random_color()
+
+    matrixportal.set_text(quote)
+    matrixportal.set_text_color(color)
  
     # Scroll it
     matrixportal.scroll_text(SCROLL_DELAY)
  
     if time.monotonic() > last_update + UPDATE_DELAY:
+        get_quotes_from_feed() 
         last_update = time.monotonic()
